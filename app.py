@@ -1,5 +1,4 @@
 ﻿from flask import Flask, render_template, request, redirect, url_for
-from flask import jsonify
 import sqlite3
 import os
 from datetime import datetime
@@ -84,7 +83,8 @@ def index():
 
 @app.route("/health", methods=["GET"])
 def health():
-    return jsonify({"status": "ok"}), 200
+    # Health check must not touch the DB.
+    return "ok", 200
 
 if __name__ == "__main__":
     init_db()
