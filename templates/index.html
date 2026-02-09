@@ -1,0 +1,63 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Query Transformer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <h1>Query Transformer</h1>
+      <p>Enter text, store it in SQLite, and view the transformed result.</p>
+    </header>
+
+    <section class="panel">
+      <form method="post" class="form">
+        <label for="query">Query</label>
+        <textarea id="query" name="query" rows="4" placeholder="Type your query..." required></textarea>
+
+        <label for="transform">Transformation</label>
+        <select id="transform" name="transform">
+          <option value="upper">Uppercase</option>
+          <option value="lower">Lowercase</option>
+          <option value="reverse">Reverse</option>
+          <option value="trim">Trim & collapse spaces</option>
+        </select>
+
+        <button type="submit">Save</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Recent Entries</h2>
+      {% if rows %}
+        <div class="list">
+          {% for row in rows %}
+            <div class="item">
+              <div class="meta">
+                <span>#{{ row['id'] }}</span>
+                <span>{{ row['transform_type'] }}</span>
+                <span>{{ row['created_at'] }} UTC</span>
+              </div>
+              <div class="cols">
+                <div>
+                  <h3>Original</h3>
+                  <p>{{ row['raw_text'] }}</p>
+                </div>
+                <div>
+                  <h3>Transformed</h3>
+                  <p>{{ row['transformed_text'] }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="muted">No entries yet.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
